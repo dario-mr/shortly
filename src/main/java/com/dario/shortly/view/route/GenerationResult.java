@@ -1,5 +1,6 @@
 package com.dario.shortly.view.route;
 
+import com.dario.shortly.view.Headline;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -18,13 +19,11 @@ import static org.springframework.util.StringUtils.hasText;
 @Route("result")
 @PageTitle("Shortly")
 @JsModule("./src/copyToClipboard.js")
-public class GenerationResult extends VerticalLayout implements BeforeEnterObserver { // TODO add top banner
+public class GenerationResult extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEvent) {
-        setMargin(true);
         setWidth("auto");
-        addClassName("card-layout");
 
         var paramsMap = beforeEvent.getLocation().getQueryParameters().getParameters();
         var longLink = paramsMap.get("longLink").get(0);
@@ -43,7 +42,7 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         var copyToClipboard = new Button("Copy to Clipboard");
         copyToClipboard.setWidth("10.5em");
         copyToClipboard.addClickListener(event -> {
-            UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)", shortLinkText.getValue());
+            UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)", shortLinkText.getValue()); // TODO not working on iOS...
             copyToClipboard.setText("✅ Copied!");
         });
 
@@ -61,7 +60,11 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         shortenAnother.setWidthFull();
         shortenAnother.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Home.class)));
 
-        add(longLinkText, secondRow, shortenAnother);
+        var container = new VerticalLayout(longLinkText, secondRow, shortenAnother);
+        container.addClassName("card-layout");
+        container.setPadding(true);
+
+        add(new Headline(), container);
     }
 
 }

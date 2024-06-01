@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Route("")
 @PageTitle("Shortly")
 @RequiredArgsConstructor
-public class Home extends Div implements HasUrlParameter<String> { // TODO add top banner
+public class Home extends Div implements HasUrlParameter<String> {
 
     private final LinkService linkService;
 

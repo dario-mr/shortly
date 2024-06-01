@@ -17,6 +17,6 @@ public class Application implements AppShellConfigurator {
 
     @Override
     public void configurePage(AppShellSettings settings) {
-        settings.addFavIcon("icon", "/images/favicon.png", "190x190"); // TODO update favicon
+        settings.addFavIcon("icon", "/images/favicon.png?v=3", "160x160");
     }
 }
