@@ -1,0 +1,36 @@
+server.port: 8081
+
+spring:
+  application.name: shortly
+  profiles.active: ${SHORTLY_PROFILE:prod}
+  config.import: optional:file:.env[.properties] # enable scanning of .env file
+
+---
+spring:
+  config.activate.on-profile: dev
+  jpa:
+    database: H2
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
+    show-sql: false
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS SHORTLY\;
+    username: sa
+    password:
+  h2.console.enabled: true
+
+vaadin.productionMode: false
+
+---
+## TODO update db connection
+spring:
+  config.activate.on-profile: prod
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres?prepareThreshold=0
+    username: postgres.rsuhstqfoaoabfzgezxr
+    password: ${DB_PASSWORD}
+
+vaadin.productionMode: true
