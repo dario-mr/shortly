@@ -13,12 +13,13 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "LINK", schema = "SHORTLY") // TODO create schema MY_SCHEMA in supabase
+@Table(name = "link", schema = "my_schema")
 @Builder
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class LinkEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "link_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "long_link")
@@ -37,6 +38,9 @@ public class LinkEntity {
 
     @Column(name = "short_link_id")
     private String shortLinkId;
+
+    @Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
     @Override
     public boolean equals(Object o) {

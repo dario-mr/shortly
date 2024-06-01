@@ -1,8 +1,8 @@
-server.port: 8081
+server.port: ${PORT:8081} # read port from render.com, or use default 8081
 
 spring:
   application.name: shortly
-  profiles.active: ${SHORTLY_PROFILE:prod}
+  profiles.active: ${PROFILE:prod}
   config.import: optional:file:.env[.properties] # enable scanning of .env file
 
 ---
@@ -14,15 +14,14 @@ spring:
     defer-datasource-initialization: true
     show-sql: false
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS SHORTLY\;
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS MY_SCHEMA\;
     username: sa
     password:
   h2.console.enabled: true
 
-vaadin.productionMode: true # TODO set to false once prod DB is setup
+vaadin.productionMode: false
 
 ---
-## TODO update db connection
 spring:
   config.activate.on-profile: prod
   jpa:
