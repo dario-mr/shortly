@@ -1,1 +1,1 @@
-insert into SHORTLY.LINK (LONG_LINK, SHORT_LINK_ID) values ('https://www.google.com', '123');
+insert into my_schema.link (long_link, short_link_id) values ('https://www.google.com', '123');
