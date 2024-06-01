@@ -1,0 +1,28 @@
+[theme~="light"] {
+    /* Main background */
+    --lumo-base-color: cornflowerblue;
+
+    /* Button background. Button toolbar. Secondary section */
+    --lumo-contrast-5pct: darkolivegreen;
+
+    /* Secondary & tertiary button text. */
+    --lumo-primary-text-color: white;
+
+    --vaadin-input-field-focused-label-color: var(--lumo-contrast);
+}
+
+/* This is needed to avoid some weird vertical scroll behavior */
+body, #outlet {
+    height: 100%;
+}
+
+.card-layout {
+    background: ghostwhite;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.card-layout:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
