@@ -19,7 +19,7 @@ spring:
     password:
   h2.console.enabled: true
 
-vaadin.productionMode: false
+vaadin.productionMode: true # TODO set to false once prod DB is setup
 
 ---
 ## TODO update db connection
