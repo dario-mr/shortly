@@ -1,6 +1,6 @@
 [theme~="light"] {
     /* Main background */
-    --lumo-base-color: cornflowerblue;
+    --lumo-base-color: deepskyblue;
 
     /* Button background. Button toolbar. Secondary section */
     --lumo-contrast-5pct: darkolivegreen;

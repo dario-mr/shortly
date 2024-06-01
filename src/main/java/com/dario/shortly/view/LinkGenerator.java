@@ -22,10 +22,7 @@ public class LinkGenerator extends VerticalLayout {
 
     public LinkGenerator(LinkService linkService) {
         this.linkService = linkService;
-
-        setMargin(true);
         setWidth("auto");
-        addClassName("card-layout");
 
         var longLinkText = new TextField("Long URL", "Enter a valid link");
         longLinkText.setWidthFull();
@@ -38,8 +35,10 @@ public class LinkGenerator extends VerticalLayout {
         var row = new HorizontalLayout(longLinkText, shortenButton);
         row.setWidthFull();
         row.setVerticalComponentAlignment(END, shortenButton);
+        row.addClassName("card-layout");
+        row.setPadding(true);
 
-        add(row);
+        add(new Headline(), row);
     }
 
     private void generateLinkAndShowResultPage(TextField longLinkText) {
