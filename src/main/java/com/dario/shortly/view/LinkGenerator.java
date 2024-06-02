@@ -5,7 +5,6 @@ import com.dario.shortly.view.route.GenerationResult;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.QueryParameters;
 import lombok.extern.slf4j.Slf4j;
@@ -14,22 +13,24 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.Map;
 
 import static com.vaadin.flow.component.Key.ENTER;
+import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
 import static org.springframework.util.StringUtils.hasText;
 
 @Slf4j
 public class LinkGenerator extends VerticalLayout {
 
+    private static final String SHORTEN_BUTTON_TEXT = "Shorten link";
+
     private final LinkService linkService;
 
-    private static final String SHORTEN_BUTTON_TEXT = "Shorten URL";
-
-    private final TextField longLinkText = new TextField("Long URL", "Enter a valid link");
+    private final TextField longLinkText = new TextField("Long link", "Enter a looong link");
     private final Button shortenButton = new Button(SHORTEN_BUTTON_TEXT);
-    private final ProgressBar progressBar = new ProgressBar(); // TODO once button gif works, remove progressBar
+    private final LoadingIcon loadingIcon = new LoadingIcon();
 
     public LinkGenerator(LinkService linkService) {
         this.linkService = linkService;
-        setWidth("auto");
+        setAlignItems(CENTER);
+        setPadding(false);
 
         longLinkText.setWidthFull();
         longLinkText.getStyle().set("padding-top", "0px");
@@ -40,15 +41,14 @@ public class LinkGenerator extends VerticalLayout {
         shortenButton.getStyle().set("padding-bottom", "1.5em");
         shortenButton.addClickListener(event -> generateLinkAndShowResultPage());
 
-        var row = new VerticalLayout(longLinkText, shortenButton);
-        row.addClassName("card-layout");
-        row.setWidthFull();
-        row.setPadding(true);
+        var cardLayout = new VerticalLayout(longLinkText, shortenButton);
+        cardLayout.addClassName("card-layout");
+        cardLayout.setWidthFull();
+        cardLayout.setPadding(true);
 
-        progressBar.setIndeterminate(true);
-        progressBar.setVisible(false);
-
-        add(new Headline(), row, progressBar);
+        var container = new VerticalLayout(new Headline(), cardLayout);
+        container.setMaxWidth("700px");
+        add(container);
     }
 
     private void generateLinkAndShowResultPage() {
@@ -62,20 +62,13 @@ public class LinkGenerator extends VerticalLayout {
                 : "http://" + longLinkValue;
         var shortLinkId = RandomStringUtils.randomAlphanumeric(8).toLowerCase(); // TODO generate a proper unique ID
 
-        progressBar.setVisible(true);
-        shortenButton.setEnabled(false);
-//        shortenButton.setText("");
-//        shortenButton.setIcon(new Image("/images/loading.gif", "loading")); // TODO fix: the icon exceeds the button size
         var ui = UI.getCurrent();
+        startLoading();
 
         linkService.save(longLink, shortLinkId)
                 .whenComplete((result, exception) ->
                         ui.access(() -> {
-                            progressBar.setVisible(false);
-                            shortenButton.setEnabled(true);
-                            shortenButton.setText(SHORTEN_BUTTON_TEXT);
-                            shortenButton.setIcon(null);
-
+                            stopLoading();
                             if (exception != null) {
                                 log.error("Error saving link to DB: {}", exception.getMessage(), exception);
                                 return;
@@ -93,4 +86,17 @@ public class LinkGenerator extends VerticalLayout {
                         }));
     }
 
+    private void startLoading() {
+        shortenButton.setEnabled(false);
+        shortenButton.setText("");
+        shortenButton.setIcon(loadingIcon);
+        longLinkText.setEnabled(false);
+    }
+
+    private void stopLoading() {
+        shortenButton.setEnabled(true);
+        shortenButton.setText(SHORTEN_BUTTON_TEXT);
+        shortenButton.setIcon(null);
+        longLinkText.setEnabled(true);
+    }
 }
