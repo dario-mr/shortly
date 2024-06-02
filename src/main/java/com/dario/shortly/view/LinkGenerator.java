@@ -82,10 +82,10 @@ public class LinkGenerator extends VerticalLayout {
                             }
 
                             ui.getPage().fetchCurrentURL(currentUrl -> {
-                                var shortLink = currentUrl + shortLinkId;
+                                var currentUrlString = currentUrl.toString().replace("http://", "").replace("https://", "");
                                 var parameters = QueryParameters.simple(Map.of(
                                         "longLink", longLink,
-                                        "shortLink", shortLink
+                                        "shortLink", currentUrlString + shortLinkId
                                 ));
 
                                 ui.navigate(GenerationResult.class, parameters);
