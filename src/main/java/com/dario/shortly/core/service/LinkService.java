@@ -4,9 +4,11 @@ import com.dario.shortly.core.domain.Link;
 import com.dario.shortly.core.repository.LinkRepository;
 import com.dario.shortly.core.repository.jpa.entity.LinkEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +20,13 @@ public class LinkService {
         return linkRepository.findByShortLink(shortLinkId).map(LinkService::toDomain);
     }
 
-    public void save(String longLink, String shortLinkId) {
-        linkRepository.save(LinkEntity.builder()
-                .longLink(longLink)
-                .shortLinkId(shortLinkId)
-                .build());
+    @Async
+    public CompletableFuture<Void> save(String longLink, String shortLinkId) {
+        return CompletableFuture.runAsync(() ->
+                linkRepository.save(LinkEntity.builder()
+                        .longLink(longLink)
+                        .shortLinkId(shortLinkId)
+                        .build()));
     }
 
     private static Link toDomain(LinkEntity linkEntity) {
