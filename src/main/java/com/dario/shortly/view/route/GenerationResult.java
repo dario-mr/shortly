@@ -15,6 +15,7 @@ import com.vaadin.flow.router.Route;
 
 import static com.vaadin.flow.component.icon.VaadinIcon.CHECK;
 import static com.vaadin.flow.component.icon.VaadinIcon.COPY;
+import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -25,7 +26,8 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEvent) {
-        setWidth("auto");
+        setAlignItems(CENTER);
+        setPadding(false);
 
         var paramsMap = beforeEvent.getLocation().getQueryParameters().getParameters();
         var longLink = paramsMap.get("longLink").get(0);
@@ -35,7 +37,7 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
             return;
         }
 
-        var shortLinkText = new TextField("Short URL");
+        var shortLinkText = new TextField("Short link");
         shortLinkText.getStyle().set("padding-top", "0px");
         shortLinkText.setWidthFull();
         shortLinkText.setReadOnly(true);
@@ -48,7 +50,7 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
             copyToClipboard.setIcon(CHECK.create());
         });
 
-        var longLinkText = new TextField("Long URL");
+        var longLinkText = new TextField("Long link");
         longLinkText.getStyle().set("padding-top", "0px");
         longLinkText.setWidthFull();
         longLinkText.setReadOnly(true);
@@ -64,11 +66,13 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         shortenAnother.getStyle().set("padding-top", "1.5em");
         shortenAnother.getStyle().set("padding-bottom", "1.5em");
 
-        var container = new VerticalLayout(longLinkText, secondRow, shortenAnother);
-        container.addClassName("card-layout");
-        container.setPadding(true);
+        var cardLayout = new VerticalLayout(longLinkText, secondRow, shortenAnother);
+        cardLayout.addClassName("card-layout");
+        cardLayout.setPadding(true);
 
-        add(new Headline(), container);
+        var container = new VerticalLayout(new Headline(), cardLayout);
+        container.setMaxWidth("700px");
+        add(container);
     }
 
 }

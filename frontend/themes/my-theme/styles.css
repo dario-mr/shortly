@@ -2,8 +2,8 @@
     /* Main background */
     --lumo-base-color: deepskyblue;
 
-    /* Button background. Button toolbar. Secondary section */
-    --lumo-contrast-5pct: darkolivegreen;
+    /* Button background */
+    --vaadin-button-background: darkolivegreen;
 
     /* Secondary & tertiary button text. */
     --lumo-primary-text-color: white;
@@ -25,4 +25,8 @@ body, #outlet {
 
 .card-layout:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+vaadin-button[disabled] {
+    background: darkseagreen;
 }
