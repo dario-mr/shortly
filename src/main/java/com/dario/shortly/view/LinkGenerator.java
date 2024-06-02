@@ -6,6 +6,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.QueryParameters;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -20,6 +21,9 @@ public class LinkGenerator extends VerticalLayout {
 
     private final LinkService linkService;
 
+    private final ProgressBar progressBar = new ProgressBar();
+    private final Button shortenButton = new Button("Shorten URL");
+
     public LinkGenerator(LinkService linkService) {
         this.linkService = linkService;
         setWidth("auto");
@@ -29,7 +33,6 @@ public class LinkGenerator extends VerticalLayout {
         longLinkText.getStyle().set("padding-top", "0px");
         longLinkText.addKeyPressListener(ENTER, event -> generateLinkAndShowResultPage(longLinkText));
 
-        var shortenButton = new Button("Shorten URL");
         shortenButton.addClickListener(event -> generateLinkAndShowResultPage(longLinkText));
 
         var row = new HorizontalLayout(longLinkText, shortenButton);
@@ -38,31 +41,47 @@ public class LinkGenerator extends VerticalLayout {
         row.addClassName("card-layout");
         row.setPadding(true);
 
-        add(new Headline(), row);
+        progressBar.setIndeterminate(true);
+        progressBar.setVisible(false);
+
+        add(new Headline(), row, progressBar);
     }
 
     private void generateLinkAndShowResultPage(TextField longLinkText) {
-        var longLink = longLinkText.getValue();
-        if (hasText(longLink)) {
-            if (!longLink.startsWith("http://") && !longLink.startsWith("https://")) {
-                longLink = "http://" + longLink;
-            }
-            var shortLinkId = RandomStringUtils.randomAlphanumeric(8).toLowerCase(); // TODO generate a proper unique ID
-
-            linkService.save(longLink, shortLinkId);
-
-            var finalLongLink = longLink;
-            UI.getCurrent().getPage().fetchCurrentURL(currentUrl -> {
-                var shortLink = currentUrl + shortLinkId;
-
-                var parameters = QueryParameters.simple(Map.of(
-                        "longLink", finalLongLink,
-                        "shortLink", shortLink
-                ));
-
-                getUI().ifPresent(ui -> ui.navigate(GenerationResult.class, parameters));
-            });
+        var longLinkValue = longLinkText.getValue();
+        if (!hasText(longLinkValue)) {
+            return;
         }
+
+        var longLink = longLinkValue.startsWith("http://") || longLinkValue.startsWith("https://")
+                ? longLinkValue
+                : "http://" + longLinkValue;
+        var shortLinkId = RandomStringUtils.randomAlphanumeric(8).toLowerCase(); // TODO generate a proper unique ID
+
+        progressBar.setVisible(true);
+        shortenButton.setEnabled(false);
+        var ui = UI.getCurrent();
+
+        linkService.save(longLink, shortLinkId)
+                .whenComplete((result, throwable) ->
+                        ui.access(() -> {
+                            progressBar.setVisible(false);
+                            shortenButton.setEnabled(true);
+
+                            if (throwable != null) {
+                                return;
+                            }
+
+                            ui.getPage().fetchCurrentURL(currentUrl -> {
+                                var shortLink = currentUrl + shortLinkId;
+                                var parameters = QueryParameters.simple(Map.of(
+                                        "longLink", longLink,
+                                        "shortLink", shortLink
+                                ));
+
+                                ui.navigate(GenerationResult.class, parameters);
+                            });
+                        }));
     }
 
 }
