@@ -13,6 +13,8 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import static com.vaadin.flow.component.icon.VaadinIcon.CHECK;
+import static com.vaadin.flow.component.icon.VaadinIcon.COPY;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -39,11 +41,11 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         shortLinkText.setReadOnly(true);
         shortLinkText.setValue(shortLink);
 
-        var copyToClipboard = new Button("Copy to Clipboard");
-        copyToClipboard.setWidth("10.5em");
+        var copyToClipboard = new Button();
+        copyToClipboard.setIcon(COPY.create());
         copyToClipboard.addClickListener(event -> {
-            UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)", shortLinkText.getValue()); // TODO not working on iOS...
-            copyToClipboard.setText("✅ Copied!");
+            UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)", shortLinkText.getValue()); // TODO fix: not working on iOS...
+            copyToClipboard.setIcon(CHECK.create());
         });
 
         var longLinkText = new TextField("Long URL");
@@ -59,6 +61,8 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         var shortenAnother = new Button("Shorten another");
         shortenAnother.setWidthFull();
         shortenAnother.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Home.class)));
+        shortenAnother.getStyle().set("padding-top", "1.5em");
+        shortenAnother.getStyle().set("padding-bottom", "1.5em");
 
         var container = new VerticalLayout(longLinkText, secondRow, shortenAnother);
         container.addClassName("card-layout");
