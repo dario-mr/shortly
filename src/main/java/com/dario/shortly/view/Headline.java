@@ -2,10 +2,10 @@ package com.dario.shortly.view;
 
 import com.vaadin.flow.component.html.H1;
 
-public class Headline extends H1 { // TODO make it nice
+public class Headline extends H1 {
 
     public Headline() {
         setText("Shortly!");
-        getStyle().set("font-family", "cursive");
+        addClassName("headline");
     }
 }

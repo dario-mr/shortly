@@ -26,9 +26,6 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEvent) {
-        setAlignItems(CENTER);
-        setPadding(false);
-
         var paramsMap = beforeEvent.getLocation().getQueryParameters().getParameters();
         var longLink = paramsMap.get("longLink").get(0);
         var shortLink = paramsMap.get("shortLink").get(0);
@@ -63,16 +60,15 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         var shortenAnother = new Button("Shorten another");
         shortenAnother.setWidthFull();
         shortenAnother.addClickListener(event -> getUI().ifPresent(ui -> ui.navigate(Home.class)));
-        shortenAnother.getStyle().set("padding-top", "1.5em");
-        shortenAnother.getStyle().set("padding-bottom", "1.5em");
 
         var cardLayout = new VerticalLayout(longLinkText, secondRow, shortenAnother);
         cardLayout.addClassName("card-layout");
-        cardLayout.setPadding(true);
 
         var container = new VerticalLayout(new Headline(), cardLayout);
         container.setMaxWidth("700px");
-        add(container);
-    }
 
+        add(container);
+        setAlignItems(CENTER);
+        setPadding(false);
+    }
 }
