@@ -9,12 +9,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.QueryParameters;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.Map;
 
 import static com.vaadin.flow.component.Key.ENTER;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
+import static org.apache.commons.text.CharacterPredicates.DIGITS;
+import static org.apache.commons.text.CharacterPredicates.LETTERS;
 import static org.springframework.util.StringUtils.hasText;
 
 @Slf4j
@@ -26,6 +28,11 @@ public class LinkGenerator extends VerticalLayout {
     private final TextField longLinkText = new TextField("Long link", "Enter a looong link");
     private final Button shortenButton = new Button(SHORTEN_BUTTON_TEXT);
     private final LoadingIcon loadingIcon = new LoadingIcon();
+
+    private final RandomStringGenerator randomGenerator = RandomStringGenerator.builder()
+            .withinRange('0', 'z')
+            .filteredBy(LETTERS, DIGITS)
+            .get();
 
     public LinkGenerator(LinkService linkService) {
         this.linkService = linkService;
@@ -60,7 +67,7 @@ public class LinkGenerator extends VerticalLayout {
         var longLink = longLinkValue.startsWith("http://") || longLinkValue.startsWith("https://")
                 ? longLinkValue
                 : "http://" + longLinkValue;
-        var shortLinkId = RandomStringUtils.randomAlphanumeric(8).toLowerCase(); // TODO generate a proper unique ID
+        var shortLinkId = randomGenerator.generate(8); // TODO generate a proper unique ID (this is an improvement, but still not collision-safe)
 
         var ui = UI.getCurrent();
         startLoading();
