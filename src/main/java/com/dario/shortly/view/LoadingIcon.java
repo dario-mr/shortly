@@ -5,7 +5,7 @@ import com.vaadin.flow.component.html.Image;
 public class LoadingIcon extends Image {
 
     public LoadingIcon() {
-        setSrc("/images/loading.gif"); // TODO find a better spinner
+        setSrc("/images/loading.gif");
         setAlt("loading");
 
         getStyle().set("vertical-align", "middle");
