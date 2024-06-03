@@ -1,5 +1,6 @@
 package com.dario.shortly.view;
 
+import com.dario.shortly.core.domain.ValidationResult;
 import com.dario.shortly.core.service.LinkService;
 import com.dario.shortly.view.route.GenerationResult;
 import com.vaadin.flow.component.UI;
@@ -49,7 +50,10 @@ public class LinkGenerator extends VerticalLayout {
 
     private void generateLinkAndShowResultPage() {
         var longLinkValue = longLinkText.getValue();
-        if (!hasText(longLinkValue)) {
+        var validationResult = validateLink(longLinkValue);
+        if (!validationResult.isValid()) {
+            longLinkText.setInvalid(true);
+            longLinkText.setErrorMessage(validationResult.message());
             return;
         }
 
@@ -94,5 +98,16 @@ public class LinkGenerator extends VerticalLayout {
         shortenButton.setText(SHORTEN_BUTTON_TEXT);
         shortenButton.setIcon(null);
         longLinkText.setEnabled(true);
+    }
+
+    private ValidationResult validateLink(String longLink) {
+        if (!hasText(longLink)) {
+            return new ValidationResult(false, "Link must have a value");
+        }
+        if (!longLink.matches("([A-Za-z0-9]+(\\.[A-Za-z0-9]+)+)")) {
+            return new ValidationResult(false, "Link must be a valid URL");
+        }
+
+        return new ValidationResult(true, "");
     }
 }
