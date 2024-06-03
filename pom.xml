@@ -21,6 +21,7 @@
 
         <vaadin.version>24.3.12</vaadin.version>
         <commons-text.version>1.12.0</commons-text.version>
+        <clipboard-helper.version>2.0.0</clipboard-helper.version>
     </properties>
 
     <dependencies>
@@ -74,6 +75,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.vaadin.olli</groupId>
+            <artifactId>clipboardhelper</artifactId>
+            <version>${clipboard-helper.version}</version>
         </dependency>
 
         <!-- test -->

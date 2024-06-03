@@ -2,9 +2,7 @@ package com.dario.shortly.view.route;
 
 import com.dario.shortly.view.Headline;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -12,6 +10,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.vaadin.olli.ClipboardHelper;
 
 import static com.vaadin.flow.component.icon.VaadinIcon.CHECK;
 import static com.vaadin.flow.component.icon.VaadinIcon.COPY;
@@ -21,7 +20,6 @@ import static org.springframework.util.StringUtils.hasText;
 
 @Route("result")
 @PageTitle("Shortly")
-@JsModule("./src/copyToClipboard.js")
 public class GenerationResult extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
@@ -42,10 +40,8 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
 
         var copyToClipboard = new Button();
         copyToClipboard.setIcon(COPY.create());
-        copyToClipboard.addClickListener(event -> {
-            UI.getCurrent().getPage().executeJs("window.copyToClipboard($0)", shortLinkText.getValue()); // TODO fix: not working on iOS...
-            copyToClipboard.setIcon(CHECK.create());
-        });
+        copyToClipboard.addClickListener(event -> copyToClipboard.setIcon(CHECK.create()));
+        var clipboardHelper = new ClipboardHelper(shortLinkText.getValue(), copyToClipboard);
 
         var longLinkText = new TextField("Long link");
         longLinkText.getStyle().set("padding-top", "0px");
@@ -53,9 +49,9 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         longLinkText.setReadOnly(true);
         longLinkText.setValue(longLink);
 
-        var secondRow = new HorizontalLayout(shortLinkText, copyToClipboard);
+        var secondRow = new HorizontalLayout(shortLinkText, clipboardHelper);
         secondRow.setWidthFull();
-        secondRow.setVerticalComponentAlignment(END, copyToClipboard);
+        secondRow.setVerticalComponentAlignment(END, clipboardHelper);
 
         var shortenAnother = new Button("Shorten another");
         shortenAnother.setWidthFull();
