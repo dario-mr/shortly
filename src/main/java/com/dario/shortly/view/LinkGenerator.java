@@ -22,33 +22,29 @@ public class LinkGenerator extends VerticalLayout {
     private static final String SHORTEN_BUTTON_TEXT = "Shorten link";
 
     private final LinkService linkService;
-
     private final TextField longLinkText = new TextField("Long link", "Enter a looong link");
     private final Button shortenButton = new Button(SHORTEN_BUTTON_TEXT);
     private final LoadingIcon loadingIcon = new LoadingIcon();
 
     public LinkGenerator(LinkService linkService) {
         this.linkService = linkService;
-        setAlignItems(CENTER);
-        setPadding(false);
 
         longLinkText.setWidthFull();
         longLinkText.getStyle().set("padding-top", "0px");
         longLinkText.addKeyPressListener(ENTER, event -> generateLinkAndShowResultPage());
 
         shortenButton.setWidthFull();
-        shortenButton.getStyle().set("padding-top", "1.5em");
-        shortenButton.getStyle().set("padding-bottom", "1.5em");
         shortenButton.addClickListener(event -> generateLinkAndShowResultPage());
 
         var cardLayout = new VerticalLayout(longLinkText, shortenButton);
         cardLayout.addClassName("card-layout");
-        cardLayout.setWidthFull();
-        cardLayout.setPadding(true);
 
         var container = new VerticalLayout(new Headline(), cardLayout);
         container.setMaxWidth("700px");
+
         add(container);
+        setAlignItems(CENTER);
+        setPadding(false);
     }
 
     private void generateLinkAndShowResultPage() {
