@@ -1,4 +1,4 @@
-package com.dario.shortly.core.repository.jpa.entity;
+package com.dario.shortly.repository.jpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

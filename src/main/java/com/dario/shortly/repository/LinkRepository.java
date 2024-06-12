@@ -1,7 +1,7 @@
-package com.dario.shortly.core.repository;
+package com.dario.shortly.repository;
 
-import com.dario.shortly.core.repository.jpa.LinkJpaRepository;
-import com.dario.shortly.core.repository.jpa.entity.LinkEntity;
+import com.dario.shortly.repository.jpa.LinkJpaRepository;
+import com.dario.shortly.repository.jpa.entity.LinkEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

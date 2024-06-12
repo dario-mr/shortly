@@ -1,6 +1,6 @@
-package com.dario.shortly.core.repository.jpa;
+package com.dario.shortly.repository.jpa;
 
-import com.dario.shortly.core.repository.jpa.entity.LinkEntity;
+import com.dario.shortly.repository.jpa.entity.LinkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

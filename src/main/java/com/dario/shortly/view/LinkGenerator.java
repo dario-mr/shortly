@@ -1,6 +1,5 @@
 package com.dario.shortly.view;
 
-import com.dario.shortly.core.domain.ValidationResult;
 import com.dario.shortly.core.service.LinkService;
 import com.dario.shortly.view.route.GenerationResult;
 import com.vaadin.flow.component.UI;
@@ -13,11 +12,11 @@ import org.apache.commons.text.RandomStringGenerator;
 
 import java.util.Map;
 
+import static com.dario.shortly.util.ValidationUtil.validateLink;
 import static com.vaadin.flow.component.Key.ENTER;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
 import static org.apache.commons.text.CharacterPredicates.DIGITS;
 import static org.apache.commons.text.CharacterPredicates.LETTERS;
-import static org.springframework.util.StringUtils.hasText;
 
 @Slf4j
 public class LinkGenerator extends VerticalLayout {
@@ -77,6 +76,7 @@ public class LinkGenerator extends VerticalLayout {
                         ui.access(() -> {
                             stopLoading();
                             if (exception != null) {
+                                // TODO show error to the user
                                 log.error("Error saving link to DB: {}", exception.getMessage(), exception);
                                 return;
                             }
@@ -105,16 +105,5 @@ public class LinkGenerator extends VerticalLayout {
         shortenButton.setText(SHORTEN_BUTTON_TEXT);
         shortenButton.setIcon(null);
         longLinkText.setEnabled(true);
-    }
-
-    private ValidationResult validateLink(String longLink) {
-        if (!hasText(longLink)) {
-            return new ValidationResult(false, "Link must have a value");
-        }
-        if (!longLink.matches("([A-Za-z0-9]+(\\.[A-Za-z0-9]+)+)")) {
-            return new ValidationResult(false, "Link must be a valid URL");
-        }
-
-        return new ValidationResult(true, "");
     }
 }
