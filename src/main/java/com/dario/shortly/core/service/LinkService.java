@@ -1,8 +1,8 @@
 package com.dario.shortly.core.service;
 
 import com.dario.shortly.core.domain.Link;
-import com.dario.shortly.core.repository.LinkRepository;
-import com.dario.shortly.core.repository.jpa.entity.LinkEntity;
+import com.dario.shortly.repository.LinkRepository;
+import com.dario.shortly.repository.jpa.entity.LinkEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
