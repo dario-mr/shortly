@@ -3,6 +3,7 @@ package com.dario.shortly.view.route;
 import com.dario.shortly.view.Headline;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -14,6 +15,8 @@ import org.vaadin.olli.ClipboardHelper;
 
 import static com.vaadin.flow.component.icon.VaadinIcon.CHECK;
 import static com.vaadin.flow.component.icon.VaadinIcon.COPY;
+import static com.vaadin.flow.component.notification.Notification.Position.TOP_CENTER;
+import static com.vaadin.flow.component.notification.NotificationVariant.LUMO_SUCCESS;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.CENTER;
 import static com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment.END;
 import static org.springframework.util.StringUtils.hasText;
@@ -38,9 +41,15 @@ public class GenerationResult extends VerticalLayout implements BeforeEnterObser
         shortLinkText.setReadOnly(true);
         shortLinkText.setValue(shortLink);
 
+        var copiedNotification = new Notification("Copied!", 1_500, TOP_CENTER);
+        copiedNotification.addThemeVariants(LUMO_SUCCESS);
+
         var copyToClipboard = new Button();
         copyToClipboard.setIcon(COPY.create());
-        copyToClipboard.addClickListener(event -> copyToClipboard.setIcon(CHECK.create()));
+        copyToClipboard.addClickListener(event -> {
+            copyToClipboard.setIcon(CHECK.create());
+            copiedNotification.open();
+        });
         var clipboardHelper = new ClipboardHelper(shortLinkText.getValue(), copyToClipboard);
 
         var longLinkText = new TextField("Long link");
