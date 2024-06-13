@@ -2,7 +2,6 @@ package com.dario.shortly.view;
 
 import com.dario.shortly.core.service.LinkService;
 import com.dario.shortly.view.route.GenerationResult;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -74,11 +73,10 @@ public class LinkGenerator extends VerticalLayout {
                 : "http://" + longLinkValue;
         var shortLinkId = randomGenerator.generate(8); // TODO generate a proper unique ID (this is an improvement, but still not collision-safe)
 
-        var ui = UI.getCurrent();
         startLoading();
 
         linkService.save(longLink, shortLinkId)
-                .whenComplete((result, exception) -> ui.access(() -> {
+                .whenComplete((result, exception) -> getUI().ifPresent(ui -> ui.access(() -> {
                     stopLoading();
 
                     if (exception != null) {
@@ -89,7 +87,7 @@ public class LinkGenerator extends VerticalLayout {
 
                     ui.getPage().fetchCurrentURL(currentUrl ->
                             ui.navigate(GenerationResult.class, buildQueryParameters(currentUrl, longLink, shortLinkId)));
-                }));
+                })));
     }
 
     private void startLoading() {
