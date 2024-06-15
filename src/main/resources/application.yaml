@@ -9,8 +9,6 @@ spring:
 spring:
   config.activate.on-profile: dev
   jpa:
-    database: H2
-    database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
     show-sql: false
   datasource:
@@ -24,9 +22,6 @@ vaadin.productionMode: false
 ---
 spring:
   config.activate.on-profile: prod
-  jpa:
-    database: POSTGRESQL
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres?prepareThreshold=0
     username: postgres.rsuhstqfoaoabfzgezxr
