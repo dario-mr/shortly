@@ -77,10 +77,9 @@ public class LinkGenerator extends VerticalLayout {
 
         linkService.save(longLink, shortLinkId)
                 .whenComplete((result, exception) -> getUI().ifPresent(ui -> ui.access(() -> {
-                    stopLoading();
-
                     if (exception != null) {
                         log.error("Error saving link to DB: {}", exception.getMessage(), exception);
+                        stopLoading();
                         errorNotification.open();
                         return;
                     }
