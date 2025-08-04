@@ -1,5 +1,6 @@
 package com.dario.shortly;
 
+import com.dario.shortly.util.PathResolver;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.server.AppShellSettings;
@@ -19,6 +20,6 @@ public class Application implements AppShellConfigurator {
 
     @Override
     public void configurePage(AppShellSettings settings) {
-        settings.addFavIcon("icon", "/images/favicon.png?v=3", "160x160");
+        settings.addFavIcon("icon", PathResolver.resolve("/images/favicon.png?v=3"), "160x160");
     }
 }

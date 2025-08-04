@@ -1,11 +1,12 @@
 # Stage 1: Build the application
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+FROM maven:3.9.9-eclipse-temurin-21-jammy AS build
 WORKDIR /app
 COPY . .
-RUN mvn package -DskipTests
+RUN mvn -B -q package -DskipTests
 
-# Stage 2: Create a smaller image with only the JAR file
-FROM eclipse-temurin:17-jre-focal
+# Stage 2: Create a minimal runtime image
+FROM gcr.io/distroless/java21-debian12
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
