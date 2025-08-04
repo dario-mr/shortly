@@ -1,4 +1,6 @@
-server.port: ${PORT:8082}
+server:
+  port: ${PORT:8082}
+  forward-headers-strategy: framework # honor the original external request context (host, scheme, prefix)
 
 spring:
   application.name: shortly
