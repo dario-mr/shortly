@@ -46,4 +46,4 @@ jobs:
           file: Dockerfile
           platforms: linux/arm64
           push: true
-          tags: dariomr8/ichiro:latest
+          tags: dariomr8/shortly:latest
