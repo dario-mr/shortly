@@ -7,6 +7,9 @@ spring:
   profiles.active: ${PROFILE:prod}
   config.import: optional:file:.env[.properties] # enable scanning of .env file
 
+management:
+  endpoints.web.exposure.include: health,info
+
 ---
 spring:
   config.activate.on-profile: dev
