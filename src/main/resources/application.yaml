@@ -8,7 +8,13 @@ spring:
   config.import: optional:file:.env[.properties] # enable scanning of .env file
 
 management:
-  endpoints.web.exposure.include: health,info
+  endpoints:
+    web.exposure.include: health,info,prometheus
+  endpoint:
+    health.probes.enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 ---
 spring:
@@ -28,8 +34,8 @@ vaadin.productionMode: false
 spring:
   config.activate.on-profile: prod
   datasource:
-    url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/postgres?prepareThreshold=0
-    username: postgres.rsuhstqfoaoabfzgezxr
+    url: jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:${DB_PORT:6543}/postgres?prepareThreshold=0
+    username: ${DB_USER:postgres.rsuhstqfoaoabfzgezxr}
     password: ${DB_PASSWORD}
 
 vaadin.productionMode: true
