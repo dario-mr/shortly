@@ -6,20 +6,20 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.1</version>
+        <version>3.5.5</version>
         <relativePath/>
     </parent>
 
     <groupId>com.dario</groupId>
     <artifactId>shortly</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
 
     <name>Shortly</name>
 
     <properties>
         <java.version>21</java.version>
 
-        <vaadin.version>24.8.5</vaadin.version>
+        <vaadin.version>24.8.8</vaadin.version>
         <commons-text.version>1.12.0</commons-text.version>
         <clipboard-helper.version>2.0.0</clipboard-helper.version>
         <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
@@ -95,7 +95,7 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
-        
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
