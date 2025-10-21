@@ -84,9 +84,6 @@
     "hash": "641891fbc50d321232313fd9b8f59f86c4129a25589bfbd8b521a1494c08e054"
   },
   "overrides": {
-    "workbox-build": {
-      "rollup": "2.79.2"
-    },
     "@vaadin/bundles": "$@vaadin/bundles",
     "@vaadin/polymer-legacy-adapter": "$@vaadin/polymer-legacy-adapter",
     "@vaadin/vaadin-development-mode-detector": "$@vaadin/vaadin-development-mode-detector",
