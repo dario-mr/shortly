@@ -2,4 +2,5 @@ target
 .git
 .github
 .idea
-*.iml
+node_modules
+.dagger
